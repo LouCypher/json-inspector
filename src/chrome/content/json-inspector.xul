@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/"?>
+<?xml-stylesheet type="text/css" href="../skin/"?>
+
+<!DOCTYPE dialog SYSTEM "../locale/">
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        id="json-inspector"
+        windowtype="devtools:jsonInspector"
+        title="JSON Inspector"
+        persist="width height screenX screenY sizemode"
+        buttons="extra1, extra2, cancel"
+        buttonlabelextra1="&button.inspect.label;"
+        buttonlabelextra2="&button.clear.label;"
+        buttonlabelcancel="&button.close.label;"
+        buttonaccesskeyextra1="&button.inspect.key;"
+        buttonaccesskeyextra2="&button.clear.key;"
+        buttonaccesskeycancel="&button.close.key;"
+        onload="checkForDOMI();"
+        ondialogaccept="inspectURL();"
+        ondialogextra1="inspectData();"
+        ondialogextra2="clear(_inputURL); clear(_inputData);"
+        ondialogcancel="close();">
+
+  <stringbundleset>
+    <stringbundle id="stringbundle"
+                  src="chrome://json-inspector/locale/json-inspector.properties" />
+  </stringbundleset>
+
+  <hbox>
+    <textbox id="url" flex="1" placeholder="&placeholder.url;" type="autocomplete"
+             enablehistory="true" autocompletesearch="history" onfocus="this.select();"/>
+
+    <button id="inspect-url" oncommand="inspectURL();" label="&button.inspect.label;"/>
+  </hbox>
+  <label>or</label>
+  <textbox id="data" multiline="true" flex="1" placeholder="&placeholder.textbox;"/>
+
+  <script type="application/javascript" src="chrome://inspector/content/hooks.js"/>
+  <script type="application/javascript" src="json-inspector.js"/>
+
+</dialog>
