@@ -1,4 +1,3 @@
-json-inspector
-==============
+# JSON Inspector
 
-Inspect JSON object for Firefox. Requires DOM Inspector extension.
+Firefox extensions. Inspect JSON object. Requires DOM Inspector extension.
