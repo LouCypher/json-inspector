@@ -6,7 +6,7 @@
     <em:type>2</em:type>
     <em:bootstrap>true</em:bootstrap>
     <em:name>JSON Inspector</em:name>
-    <em:version>0.1a2</em:version>
+    <em:version>0.1a3</em:version>
     <em:description>Inspect JSON object. Requires DOM Inspector extension.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:homepageURL>http://github.com/loucypher/json-inspector</em:homepageURL>

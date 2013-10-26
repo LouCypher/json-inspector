@@ -66,7 +66,7 @@ function init(aWindow) {
 
   // Thunderbird
   // Insert menuitem to Tools menu
-  let prefSep = document.getElementById("prefSep");
+  let prefSep = document.querySelector("#taskPopup #prefSep");
   if (prefSep)
     prefSep.parentNode.insertBefore(addMenuItem(document), prefSep);
 
