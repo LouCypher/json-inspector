@@ -10,6 +10,35 @@
 const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 Cu.import("resource://gre/modules/Services.jsm");
 
+/**
+ * Start setting default preferences 
+ * http://starkravingfinkle.org/blog/2011/01/restartless-add-ons-%e2%80%93-default-preferences/
+ */
+const PREF_BRANCH = "extensions.json-inspector@loucypher.";
+const PREFS = {
+  description: "chrome://json-inspector/locale/json-inspector.properties"
+};
+
+function setDefaultPrefs() {
+  let branch = Services.prefs.getDefaultBranch(PREF_BRANCH);
+  for (let [key, val] in Iterator(PREFS)) {
+    switch (typeof val) {
+      case "boolean":
+        branch.setBoolPref(key, val);
+        break;
+      case "number":
+        branch.setIntPref(key, val);
+        break;
+      case "string":
+        branch.setCharPref(key, val);
+        break;
+    }
+  }
+}
+/*
+ * End setting default preferences 
+ **/
+
 function log(aString) {
   Services.console.logStringMessage("Bootstrap:\n" + aString);
 }
@@ -22,11 +51,23 @@ function resProtocolHandler(aResourceName, aURI) {
 
 function addMenuItem(aDocument) {
   let menuitem = aDocument.createElement("menuitem");
-  menuitem.setAttribute("label", "JSON Inspector");
   menuitem.setAttribute("command", "Tools:JSONInspector");
   menuitem.setAttribute("image", "chrome://json-inspector/skin/json.png");
   menuitem.className = "json-inspector menuitem-iconic";
   return menuitem;
+}
+
+function jsonInspector(aEvent) {
+  let win = Services.wm.getMostRecentWindow("devtools:jsonInspector");
+  if (win)
+    win.focus();
+  
+  else {
+    let node = aEvent.target;
+    let globalWin = node.ownerGlobal ? node.ownerGlobal : node.ownerDocument.defaultView;
+    globalWin.openDialog("chrome://json-inspector/content/", "json-inspector",
+                         "chrome, dialog=no, centerscreen, minimizable, resizable");
+  }
 }
 
 function init(aWindow) {
@@ -39,15 +80,8 @@ function init(aWindow) {
   let command = commandset.appendChild(document.createElement("command"));
   command.id = "Tools:JSONInspector";
   command.className = "json-inspector";
-  command.addEventListener("command", function() {
-    let win = Services.wm.getMostRecentWindow("devtools:jsonInspector");
-    if (win)
-      win.focus();
-    
-    else
-      aWindow.openDialog("chrome://json-inspector/content/", "json-inspector",
-                         "chrome, dialog=no, centerscreen, minimizable, resizable");
-  });
+  command.setAttribute("label", "JSON Inspector");
+  command.addEventListener("command", jsonInspector);
 
   // Firefox
   // Insert menuitem to Web Developer menu
@@ -82,13 +116,17 @@ function init(aWindow) {
  * Handle the add-on being activated on install/enable
  */
 function startup(data, reason) {
+  setDefaultPrefs();
+
   resourceName = data.id.toLowerCase().match(/[^\@]+/).toString();
   //log(resourceName);
 
-  // Add `resource:` alias
+  // Add resource alias
   resProtocolHandler(resourceName, data.resourceURI);
 
+  // Load module
   Cu.import("resource://" + resourceName + "/modules/watchwindows.jsm");
+
   watchWindows(init);
 }
 
@@ -101,8 +139,12 @@ function shutdown(data, reason) {
     return;
 
   unload();
+
+  // Unload module
   Cu.unload("resource://" + resourceName + "/modules/watchwindows.jsm");
-  resProtocolHandler(resourceName, null); // Remove `resource:` alias
+  
+  // Remove resource
+  resProtocolHandler(resourceName, null);
 }
 
 /**
