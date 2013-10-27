@@ -57,8 +57,16 @@ function addMenuItem(aDocument) {
   return menuitem;
 }
 
+function getJSIwindow() Services.wm.getMostRecentWindow("devtools:jsonInspector");
+
+function closeJSIwindow() {
+  let win = getJSIwindow();
+  if (win)
+    win.close();
+}
+
 function jsonInspector(aEvent) {
-  let win = Services.wm.getMostRecentWindow("devtools:jsonInspector");
+  let win = getJSIwindow();
   if (win)
     win.focus();
   
@@ -138,6 +146,7 @@ function shutdown(data, reason) {
   if (reason == APP_SHUTDOWN)
     return;
 
+  closeJSIwindow();
   unload();
 
   // Unload module
@@ -150,9 +159,13 @@ function shutdown(data, reason) {
 /**
  * Handle the add-on being installed
  */
-function install(data, reason) {}
+function install(data, reason) {
+  closeJSIwindow();
+}
 
 /**
  * Handle the add-on being uninstalled
  */
-function uninstall(data, reason) {}
+function uninstall(data, reason) {
+  closeJSIwindow();
+}
