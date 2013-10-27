@@ -132,29 +132,45 @@ function inspectData() {
   inspectJSONObject(data);
 }
 
+function updateAttributes(aRestore, aURL) {
+  if (aRestore) {
+    _inputURL.value = aURL;
+    _inputURL.removeAttribute("disabled");
+    _button.removeAttribute("disabled");
+    _button.setAttribute("label", getString("inspect"));
+  }
+
+  else {
+    _button.setAttribute("label", getString("wait"));
+    _button.setAttribute("disabled", "true");
+    _inputURL.setAttribute("disabled", "true");
+    _inputURL.value = getString("processing");
+  }
+}
+
 function inspectURL() {
   let url = _inputURL.value;
   if (isEmpty(url))
     return;
 
-  let label = _button.label;
-  _button.setAttribute("label", getString("wait"));
-  _button.setAttribute("disabled", "true");
-  _inputURL.setAttribute("disabled", "true");
+  updateAttributes();
 
   if (!/^((ht|f)tps?|chrome|resource|about|data|file):/.test(url))
     url = "http://" + url;
 
   let xhr = new XMLHttpRequest();
   xhr.onload = function() {
-    _inputURL.removeAttribute("disabled");
-    _button.removeAttribute("disabled");
-    _button.setAttribute("label", label);
+    updateAttributes(true, url);
     if (xhr.status >= 400) {
-      alertBox("Error " + xhr.status)
+      alertBox(xhr.statusText)
       return;
     }
     inspectJSONObject(xhr.responseText);
+  }
+  xhr.onerror = function() {
+    updateAttributes(true, url);
+    alertBox("Error " + xhr.status);
+    return;
   }
   xhr.open("GET", url);
   xhr.send();
