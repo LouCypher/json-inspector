@@ -1,3 +1,4 @@
 # JSON Inspector
 
-Firefox extensions. Inspect JSON object. Requires DOM Inspector extension.
+Firefox extension. Inspect JSON object from a URL or entered data.  
+Requires DOM Inspector extension.
