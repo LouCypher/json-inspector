@@ -1,0 +1,8 @@
+<!ENTITY button.inspect.label   "Inspeksi">
+<!ENTITY button.inspect.key     "I">
+<!ENTITY button.clear.label     "Hapus">
+<!ENTITY button.clear.key       "H">
+<!ENTITY button.close.label     "Tutup">
+<!ENTITY button.close.key       "T">
+<!ENTITY placeholder.url        "Masukkan URL dari file JSON di sini">
+<!ENTITY placeholder.textbox    "Masukkan data JSON di sini">

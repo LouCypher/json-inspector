@@ -1,3 +1,4 @@
 content json-inspector              chrome/content/
 skin    json-inspector classic/1.0  chrome/skin/classic/
 locale  json-inspector en-US        chrome/locale/en-US/
+locale  json-inspector id           chrome/locale/id/
