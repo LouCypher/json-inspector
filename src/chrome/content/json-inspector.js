@@ -9,7 +9,10 @@
 
 Components.utils.import("resource://gre/modules/Services.jsm");
 
-const { startup: startup, obs: obs, wm: wm, prompt: promptSvc, urlFormatter: format } = Services;
+const {
+  startup: startup, obs: obs, wm: wm, prefs: prefs,
+  prompt: promptSvc, urlFormatter: format
+} = Services;
 
 let _inputData = document.getElementById("data");
 let _inputURL = document.getElementById("url");
@@ -89,14 +92,8 @@ function checkForDOMI() {
         let win = wm.getMostRecentWindow("navigator:browser") ||
                   wm.getMostRecentWindow("mail:3pane");
         win.focus();
-
-        let xpi = "https://addons.mozilla.org/firefox/downloads/latest/6622/" +
-                  "addon-6622-latest.xpi?src=external-JSON-Inspector";
-
-        if (typeof win.openContentTab == "function")
-          win.openContentTab(xpi);
-        else
-          win.loadURI(xpi);
+        win.content.location.assign("https://addons.mozilla.org/firefox/downloads/latest/6622/" +
+                                    "?src=external-JSON-Inspector");
       }
     }
     window.close();
@@ -113,6 +110,11 @@ function isEmpty(aString) {
     return true;
   }
   return false;
+}
+
+function copyData(aData) {
+  if (prefs.getBoolPref("extensions.json-inspector@loucypher.copyResponse"))
+    _inputData.value = aData;
 }
 
 function inspectJSONObject(aStrJSON) {
@@ -165,6 +167,7 @@ function inspectURL() {
       alertBox(xhr.statusText)
       return;
     }
+    copyData(xhr.responseText);
     inspectJSONObject(xhr.responseText);
   }
   xhr.onerror = function() {

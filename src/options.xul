@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<!DOCTYPE vbox SYSTEM "chrome://json-inspector/locale/">
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <setting type="control" title="&options.required.label;" desc="&options.required.desc;">
+    <label class="text-link"
+           value="DOM Inspector"
+           href="https://addons.mozilla.org/firefox/downloads/latest/6622/
+?src=external-JSON-Inspector"
+           onclick="event.preventDefault(); if (event.button != 0) return;
+AddonManager.getAddonByID('inspector@mozilla.org', function(addon) {
+  if (addon)
+    loadView('addons://detail/inspector%40mozilla.org');
+  else
+    location.assign(event.target.href);
+})"/>
+
+    <label value="or"/>
+
+    <label class="text-link"
+           value="DOM Inspector Plus! [dm]"
+           href="https://addons.mozilla.org/firefox/downloads/latest/254571/
+?src=external-JSON-Inspector"
+           onclick="event.preventDefault(); if (event.button != 0) return;
+AddonManager.getAddonByID('inspector-dp@mozilla.org', function(addon) {
+  if (addon)
+    loadView('addons://detail/inspector-dp%40mozilla.org');
+  else
+    location.assign(event.target.href);
+})"/>
+  </setting>
+
+  <setting pref="extensions.json-inspector@loucypher.copyResponse"
+           type="bool"
+           title="&options.copyData.label;"/>
+</vbox>

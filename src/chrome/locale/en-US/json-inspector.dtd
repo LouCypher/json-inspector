@@ -1,8 +1,12 @@
-<!ENTITY button.inspect.label   "Inspect">
-<!ENTITY button.inspect.key     "I">
-<!ENTITY button.clear.label     "Clear">
-<!ENTITY button.clear.key       "r">
-<!ENTITY button.close.label     "Close">
-<!ENTITY button.close.key       "C">
-<!ENTITY placeholder.url        "Insert URL of JSON file here">
-<!ENTITY placeholder.textbox    "Insert JSON data here">
+<!ENTITY button.inspect.label     "Inspect">
+<!ENTITY button.inspect.url.key   "p">
+<!ENTITY button.inspect.data.key  "I">
+<!ENTITY button.clear.label       "Clear">
+<!ENTITY button.clear.key         "r">
+<!ENTITY button.close.label       "Close">
+<!ENTITY button.close.key         "C">
+<!ENTITY placeholder.url          "Insert URL of JSON file here">
+<!ENTITY placeholder.textbox      "Insert JSON data here">
+<!ENTITY options.copyData.label   "Automatically copy response data into textarea">
+<!ENTITY options.required.label   "Required extension">
+<!ENTITY options.required.desc    "Extension that is required by JSON Inspector to run properly.">

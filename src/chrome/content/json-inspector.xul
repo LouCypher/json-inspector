@@ -22,7 +22,7 @@
         buttonlabelextra1="&button.inspect.label;"
         buttonlabelextra2="&button.clear.label;"
         buttonlabelcancel="&button.close.label;"
-        buttonaccesskeyextra1="&button.inspect.key;"
+        buttonaccesskeyextra1="&button.inspect.data.key;"
         buttonaccesskeyextra2="&button.clear.key;"
         buttonaccesskeycancel="&button.close.key;"
         onload="checkForDOMI();"
@@ -40,7 +40,8 @@
     <textbox id="url" flex="1" placeholder="&placeholder.url;" type="autocomplete"
              enablehistory="true" autocompletesearch="history" onfocus="this.select();"/>
 
-    <button id="inspect-url" oncommand="inspectURL();" label="&button.inspect.label;"/>
+    <button id="inspect-url" oncommand="inspectURL();"
+            label="&button.inspect.label;" accesskey="&button.inspect.url.key;"/>
   </hbox>
   <label>or</label>
   <textbox id="data" multiline="true" flex="1" placeholder="&placeholder.textbox;"/>

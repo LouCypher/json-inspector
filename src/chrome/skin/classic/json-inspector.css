@@ -1,3 +1,4 @@
-label, textbox { font-size: 10pt }
-#data { font-family: monospace }
-#url { padding: 3px }
+#data {
+  font-family: monospace;
+  font-size: medium;
+}

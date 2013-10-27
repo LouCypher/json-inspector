@@ -16,7 +16,9 @@ Cu.import("resource://gre/modules/Services.jsm");
  */
 const PREF_BRANCH = "extensions.json-inspector@loucypher.";
 const PREFS = {
-  description: "chrome://json-inspector/locale/json-inspector.properties"
+  description: "chrome://json-inspector/locale/json-inspector.properties",
+  //firstRun: true,
+  copyResponse: false
 };
 
 function setDefaultPrefs() {
@@ -146,7 +148,9 @@ function shutdown(data, reason) {
   if (reason == APP_SHUTDOWN)
     return;
 
+  // Close existing JSON Inspector window
   closeJSIwindow();
+
   unload();
 
   // Unload module
@@ -160,12 +164,22 @@ function shutdown(data, reason) {
  * Handle the add-on being installed
  */
 function install(data, reason) {
+  // Close existing JSON Inspector window
   closeJSIwindow();
+
+/*// Do something on first install only
+  let prefs = Services.prefs.getBranch(PREF_BRANCH);
+  if (prefs.getBoolPref("firstRun")) {
+    // doSomething();
+    prefs.setBoolPref("firstRun", false);
+  }
+*/
 }
 
 /**
  * Handle the add-on being uninstalled
  */
 function uninstall(data, reason) {
+  // Close existing JSON Inspector window
   closeJSIwindow();
 }

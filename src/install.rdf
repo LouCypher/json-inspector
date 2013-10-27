@@ -5,9 +5,10 @@
     <em:id>json-inspector@loucypher</em:id>
     <em:type>2</em:type>
     <em:bootstrap>true</em:bootstrap>
+    <!--em:unpack>true</em:unpack-->
     <em:name>JSON Inspector</em:name>
-    <em:version>0.1a3</em:version>
-    <em:description>Inspect JSON object. Requires DOM Inspector extension.</em:description>
+    <em:version>0.1a4</em:version>
+    <em:description>Inspect JSON object from a URL or entered data. Requires DOM Inspector extension.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:homepageURL>http://github.com/loucypher/json-inspector</em:homepageURL>
     <em:iconURL>chrome://json-inspector/skin/json-48.png</em:iconURL>
@@ -17,7 +18,7 @@
       <Description>
         <em:locale>en-US</em:locale>
         <em:name>JSON Inspector</em:name>
-        <em:description>Inspect JSON object. Requires DOM Inspector extension.</em:description>
+        <em:description>Inspect JSON object from a URL or entered data. Requires DOM Inspector extension.</em:description>
         <em:creator>LouCypher</em:creator>
         <em:homepageURL>http://github.com/loucypher/json-inspector</em:homepageURL>
       </Description>
@@ -27,7 +28,7 @@
       <Description>
         <em:locale>id</em:locale>
         <em:name>JSON Inspector</em:name>
-        <em:description>Inspeksi obyek JSON. Memerlukan pengaya DOM Inspector.</em:description>
+        <em:description>Inspeksi obyek JSON dari lokasi atau data masukan. Memerlukan pengaya DOM Inspector.</em:description>
         <em:creator>LouCypher</em:creator>
         <em:homepageURL>http://github.com/loucypher/json-inspector</em:homepageURL>
       </Description>
