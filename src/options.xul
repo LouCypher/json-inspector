@@ -14,7 +14,7 @@ AddonManager.getAddonByID('inspector@mozilla.org', function(addon) {
     location.assign(event.target.href);
 })"/>
 
-    <label value="or"/>
+    <label value="&options.or.label;"/>
 
     <label class="text-link"
            value="DOM Inspector Plus! [dm]"

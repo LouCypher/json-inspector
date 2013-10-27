@@ -10,3 +10,4 @@
 <!ENTITY options.copyData.label   "Automatically copy response data into textarea">
 <!ENTITY options.required.label   "Required extension">
 <!ENTITY options.required.desc    "Extension that is required by JSON Inspector to run properly.">
+<!ENTITY options.or.label         "or">

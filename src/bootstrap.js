@@ -51,14 +51,6 @@ function resProtocolHandler(aResourceName, aURI) {
              .setSubstitution(aResourceName, aURI, null)
 }
 
-function addMenuItem(aDocument) {
-  let menuitem = aDocument.createElement("menuitem");
-  menuitem.setAttribute("command", "Tools:JSONInspector");
-  menuitem.setAttribute("image", "chrome://json-inspector/skin/json.png");
-  menuitem.className = "json-inspector menuitem-iconic";
-  return menuitem;
-}
-
 function getJSIwindow() Services.wm.getMostRecentWindow("devtools:jsonInspector");
 
 function closeJSIwindow() {
@@ -80,39 +72,67 @@ function jsonInspector(aEvent) {
   }
 }
 
+function addCommand(aDocument, aId, aLabel, aCallback) {
+  let commandset = aDocument.getElementById("mainCommandSet") || // Firefox and SeaMonkey
+                   aDocument.getElementById("mailCommands");     // Thunderbird
+
+  let command = commandset.appendChild(aDocument.createElement("command"));
+  command.id = aId;
+  command.className = "json-inspector";
+  command.setAttribute("label", aLabel);
+  command.addEventListener("command", aCallback);
+}
+
+function addMenuitem(aDocument, aCommand) {
+  let menuitem = aDocument.createElement("menuitem");
+  menuitem.setAttribute("command", aCommand);
+  menuitem.setAttribute("image", "chrome://json-inspector/skin/json.png");
+  menuitem.className = "json-inspector menuitem-iconic";
+  return menuitem;
+}
+
 function init(aWindow) {
   let document = aWindow.document;
 
-  let commandset = document.getElementById("mainCommandSet") || // Firefox and SeaMonkey
-                   document.getElementById("mailCommands");     // Thunderbird
-
-  // Insert command to main commandset
-  let command = commandset.appendChild(document.createElement("command"));
-  command.id = "Tools:JSONInspector";
-  command.className = "json-inspector";
-  command.setAttribute("label", "JSON Inspector");
-  command.addEventListener("command", jsonInspector);
+  // Insert commands to main commandset
+  addCommand(document, "Tools:JSONInspector", "JSON Inspector", jsonInspector);
+  addCommand(document, "Tools:JSONInspectorPrefs", "JSON Inspector Options", function() {
+    let view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
+    "toEM" in aWindow ? aWindow.toEM(view)
+                      : "openAddonsMgr" in aWindow ? aWindow.openAddonsMgr(view)
+                                                   : aWindow.BrowserOpenAddonsMgr(view);
+  });
 
   // Firefox
   // Insert menuitem to Web Developer menu
   let devToolsSeparators = document.querySelectorAll("menuseparator[id$='devToolsEndSeparator']");
   for (let i = 0; i < devToolsSeparators.length; i++) {
-    let separator = devToolsSeparators[i];
-    if (separator)
-      separator.parentNode.insertBefore(addMenuItem(document), separator);
+    let separator1 = devToolsSeparators[i];
+    if (separator1)
+      separator1.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspector"), separator1);
   };
 
   // SeaMonkey
   // Insert menuitem to Web Development menu
   let toolsPopup = document.getElementById("toolsPopup");
   if (toolsPopup)
-    toolsPopup.appendChild(addMenuItem(document));
+    toolsPopup.appendChild(addMenuitem(document, "Tools:JSONInspector"));
 
   // Thunderbird
   // Insert menuitem to Tools menu
   let prefSep = document.querySelector("#taskPopup #prefSep");
-  if (prefSep)
-    prefSep.parentNode.insertBefore(addMenuItem(document), prefSep);
+  if (prefSep) {
+    prefSep.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspector"), prefSep);
+  }
+
+  // Add options menu
+  let separator2 = document.querySelector("#appmenu_customizeMenu menuseparator:not([id])");
+  if (separator2)
+    separator2.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspectorPrefs"), separator2);
+
+  let menupref = document.getElementById("menu_preferences");
+  if (menupref)
+    menupref.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspectorPrefs"), menupref);
 
   unload(function() {
     let items = document.querySelectorAll(".json-inspector");
@@ -136,6 +156,8 @@ function startup(data, reason) {
 
   // Load module
   Cu.import("resource://" + resourceName + "/modules/watchwindows.jsm");
+
+  addonId = data.id;
 
   watchWindows(init);
 }

@@ -10,3 +10,4 @@
 <!ENTITY options.copyData.label   "Salin data respon ke dalam textarea secara otomatis">
 <!ENTITY options.required.label   "Pengaya yang diperlukan">
 <!ENTITY options.required.desc    "Pengaya yang diperlukan oleh JSON Inspector agar bisa berjalan dengan semestinya.">
+<!ENTITY options.or.label         "atau">
