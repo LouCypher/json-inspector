@@ -36,15 +36,25 @@
                   src="chrome://json-inspector/locale/json-inspector.properties" />
   </stringbundleset>
 
-  <hbox>
-    <textbox id="url" flex="1" placeholder="&placeholder.url;" type="autocomplete"
-             enablehistory="true" autocompletesearch="history" onfocus="this.select();"/>
+  <keyset>
+    <key id="alt-enter" keycode="VK_RETURN" modifiers="alt" oncommand="keyboardAction();"/>
+    <key id="ctrl-enter" keycode="VK_RETURN" modifiers="control" oncommand="keyboardAction();"/>
+    <key id="shift-enter" keycode="VK_RETURN" modifiers="shift" oncommand="keyboardAction();"/>
+    <key id="inspect-document" key="i" modifiers="control shift"
+         oncommand="inspectDOMNode(document.documentElement);"/>
+    <key id="inspect-document" key="i" modifiers="control"
+         oncommand="inspectDOMNode(document.commandDispatcher.focusedElement);"/>
+  </keyset>
 
+  <hbox>
+    <textbox id="url" accesskey="d" flex="1" placeholder="&placeholder.url;" type="autocomplete"
+             enablehistory="true" autocompletesearch="history" onfocus="this.select();"/>
     <button id="inspect-url" oncommand="inspectURL();"
             label="&button.inspect.label;" accesskey="&button.inspect.url.key;"/>
   </hbox>
   <label>or</label>
-  <textbox id="data" multiline="true" flex="1" placeholder="&placeholder.textbox;"/>
+  <textbox id="data" accesskey="s" multiline="true" flex="1"
+           placeholder="&placeholder.textbox;"/>
 
   <script type="application/javascript" src="chrome://inspector/content/hooks.js"/>
   <script type="application/javascript" src="json-inspector.js"/>

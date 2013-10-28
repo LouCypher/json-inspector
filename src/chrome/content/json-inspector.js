@@ -17,11 +17,8 @@ const {
 let _inputData = document.getElementById("data");
 let _inputURL = document.getElementById("url");
 let _button = document.getElementById("inspect-url");
-let strings = document.getElementById("stringbundle");
 
-function getString(aKey) {
-  return strings.getString(aKey);
-}
+function getString(aKey) document.getElementById("stringbundle").getString(aKey);
 
 function alertBox(aText) {
   promptSvc.alert(null, document.title, aText);
@@ -45,16 +42,17 @@ function restartApp() {
                              .createInstance(Components.interfaces.nsISupportsPRBool);
 
   obs.notifyObservers(cancelQuit, "quit-application-requested", null);
-  if (cancelQuit.data) {
+  if (cancelQuit.data)
     return;
-  }
+
   obs.notifyObservers(null, "quit-application-granted", null);
 
   let window = wm.getEnumerator(null);
 
   while (window.hasMoreElements()) {
     let win = window.getNext();
-    if ("tryToClose" in win && !win.tryToClose()) return;
+    if ("tryToClose" in win && !win.tryToClose())
+      return;
   }
 
   startup.quit(startup.eRestart | startup.eAttemptQuit);
@@ -113,8 +111,20 @@ function isEmpty(aString) {
 }
 
 function copyData(aData) {
-  if (prefs.getBoolPref("extensions.json-inspector@loucypher.copyResponse"))
-    _inputData.value = aData;
+  let isJSON = true;
+  try {
+    let obj = JSON.parse(aData);
+  } catch(ex) {
+    isJSON = false;
+  }
+  switch (prefs.getIntPref("extensions.json-inspector@loucypher.copyResponse")) {
+    case 2:
+      _inputData.value = aData;
+      break;
+    case 1:
+      if (isJSON) _inputData.value = aData;
+    default:
+  }
 }
 
 function inspectJSONObject(aStrJSON) {
@@ -155,11 +165,10 @@ function inspectURL() {
   if (isEmpty(url))
     return;
 
-  updateAttributes();
-
-  if (!/^((ht|f)tps?|chrome|resource|about|data|file):/.test(url))
+  if (!/^((htt|f)tps?|chrome|resource|about|data|file):/.test(url))
     url = "http://" + url;
 
+  updateAttributes();
   let xhr = new XMLHttpRequest();
   xhr.onload = function() {
     updateAttributes(true, url);
@@ -167,8 +176,8 @@ function inspectURL() {
       alertBox(xhr.statusText)
       return;
     }
-    copyData(xhr.responseText);
     inspectJSONObject(xhr.responseText);
+    copyData(xhr.responseText);
   }
   xhr.onerror = function() {
     updateAttributes(true, url);
@@ -177,4 +186,12 @@ function inspectURL() {
   }
   xhr.open("GET", url);
   xhr.send();
+}
+
+function keyboardAction() {
+  let { focusedElement } = document.commandDispatcher;
+  if (focusedElement instanceof HTMLInputElement)
+    inspectURL();
+  if (focusedElement instanceof HTMLTextAreaElement)
+    inspectData();
 }
