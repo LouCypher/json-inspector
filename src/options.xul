@@ -1,32 +1,36 @@
 <?xml version="1.0" ?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+
 <!DOCTYPE vbox SYSTEM "chrome://json-inspector/locale/">
+
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <setting type="control" title="&options.required.label;" desc="&options.required.desc;">
     <label class="text-link"
-           value="DOM Inspector"
-           href="https://addons.mozilla.org/firefox/downloads/latest/6622/
-?src=external-JSON-Inspector"
-           onclick="event.preventDefault(); if (event.button != 0) return;
-AddonManager.getAddonByID('inspector@mozilla.org', function(addon) {
-  if (addon)
-    loadView('addons://detail/inspector%40mozilla.org');
-  else
-    location.assign(event.target.href);
-})"/>
+           value="&dom-inspector.name;"
+           tooltiptext="&options.required.tooltip.install;"
+           statustext="&dom-inspector.id;"
+           href="&amo.download.baseURL;&dom-inspector.amoId;&amo.download.source;"
+           onmouseenter="&link.onmouseenter;"
+           onclick="&link.onclick;"/>
 
     <label value="&options.or.label;"/>
 
     <label class="text-link"
-           value="DOM Inspector Plus! [dm]"
-           href="https://addons.mozilla.org/firefox/downloads/latest/254571/
-?src=external-JSON-Inspector"
-           onclick="event.preventDefault(); if (event.button != 0) return;
-AddonManager.getAddonByID('inspector-dp@mozilla.org', function(addon) {
-  if (addon)
-    loadView('addons://detail/inspector-dp%40mozilla.org');
-  else
-    location.assign(event.target.href);
-})"/>
+           value="&dom-inspector-dp.name;"
+           tooltiptext="&options.required.tooltip.install;"
+           statustext="&dom-inspector-dp.id;"
+           href="&amo.download.baseURL;&dom-inspector-dp.amoId;&amo.download.source;"
+           onmouseenter="&link.onmouseenter;"
+           onclick="&link.onclick;"/>
+
+    <label value="&options.chose.label;"/>
   </setting>
 
   <setting pref="extensions.json-inspector@loucypher.copyResponse"

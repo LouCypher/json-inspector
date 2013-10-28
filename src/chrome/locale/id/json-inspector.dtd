@@ -1,13 +1,47 @@
-<!ENTITY button.inspect.label     "Inspeksi">
-<!ENTITY button.inspect.url.key   "p">
-<!ENTITY button.inspect.data.key  "I">
-<!ENTITY button.clear.label       "Hapus">
-<!ENTITY button.clear.key         "H">
-<!ENTITY button.close.label       "Tutup">
-<!ENTITY button.close.key         "T">
-<!ENTITY placeholder.url          "Masukkan URL dari file JSON di sini">
-<!ENTITY placeholder.textbox      "Masukkan data JSON di sini">
-<!ENTITY options.copyData.label   "Salin data respon ke dalam textarea secara otomatis">
-<!ENTITY options.required.label   "Pengaya yang diperlukan">
-<!ENTITY options.required.desc    "Pengaya yang diperlukan oleh JSON Inspector agar bisa berjalan dengan semestinya.">
-<!ENTITY options.or.label         "atau">
+<!-- JSON Inspector window -->
+<!ENTITY button.inspect.label               "Inspeksi">
+<!ENTITY button.inspect.url.key             "p">
+<!ENTITY button.inspect.data.key            "I">
+<!ENTITY button.clear.label                 "Hapus">
+<!ENTITY button.clear.key                   "H">
+<!ENTITY button.close.label                 "Tutup">
+<!ENTITY button.close.key                   "T">
+<!ENTITY placeholder.url                    "Masukkan URL dari file JSON di sini">
+<!ENTITY placeholder.textbox                "Masukkan data JSON di sini">
+
+<!-- Options page -->
+<!ENTITY options.copyData.label             "Salin data respon ke dalam textarea secara otomatis">
+<!ENTITY options.required.label             "Pengaya yang diperlukan">
+<!ENTITY options.required.desc              "Pengaya yang diperlukan oleh JSON Inspector agar bisa berjalan dengan semestinya.">
+<!ENTITY options.required.tooltip.install   "Klik untuk memasang">
+<!ENTITY options.required.tooltip.view      "Klik untuk melihat">
+<!ENTITY options.or.label                   "atau">
+<!ENTITY options.chose.label                "(pilih salah satu saja)">
+
+<!--                         DO NOT TRANSLATE BELOW THIS LINE!                         -->
+
+<!ENTITY amo.download.baseURL               "https://addons.mozilla.org/firefox/downloads/latest/">
+<!ENTITY amo.download.source                "/?src=external-JSON-Inspector">
+<!ENTITY link.onmouseenter                  "
+AddonManager.getAddonByID(event.target.statusText, function(addon) {
+  if (addon)
+    event.target.tooltipText = '&options.required.tooltip.view;';
+})">
+<!ENTITY link.onclick                       "
+event.preventDefault();
+if (event.button != 0) return;
+AddonManager.getAddonByID(event.target.statusText, function(addon) {
+  if (addon)
+    loadView('addons://detail/' + encodeURIComponent(event.target.statusText));
+  else
+    location.assign(event.target.href);
+})">
+
+<!-- DOM Inspector -->
+<!ENTITY dom-inspector.name                 "DOM Inspector">
+<!ENTITY dom-inspector.id                   "inspector@mozilla.org">
+<!ENTITY dom-inspector.amoId                "6622">
+<!-- DOM Inspector Plus! [dm] -->
+<!ENTITY dom-inspector-dp.name              "DOM Inspector Plus! [dm]">
+<!ENTITY dom-inspector-dp.id                "inspector-dp@mozilla.org">
+<!ENTITY dom-inspector-dp.amoId             "254571">

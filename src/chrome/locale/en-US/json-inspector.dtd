@@ -1,13 +1,47 @@
-<!ENTITY button.inspect.label     "Inspect">
-<!ENTITY button.inspect.url.key   "p">
-<!ENTITY button.inspect.data.key  "I">
-<!ENTITY button.clear.label       "Clear">
-<!ENTITY button.clear.key         "r">
-<!ENTITY button.close.label       "Close">
-<!ENTITY button.close.key         "C">
-<!ENTITY placeholder.url          "Insert URL of JSON file here">
-<!ENTITY placeholder.textbox      "Insert JSON data here">
-<!ENTITY options.copyData.label   "Automatically copy response data into textarea">
-<!ENTITY options.required.label   "Required extension">
-<!ENTITY options.required.desc    "Extension that is required by JSON Inspector to run properly.">
-<!ENTITY options.or.label         "or">
+<!-- JSON Inspector window -->
+<!ENTITY button.inspect.label               "Inspect">
+<!ENTITY button.inspect.url.key             "p">
+<!ENTITY button.inspect.data.key            "I">
+<!ENTITY button.clear.label                 "Clear">
+<!ENTITY button.clear.key                   "r">
+<!ENTITY button.close.label                 "Close">
+<!ENTITY button.close.key                   "C">
+<!ENTITY placeholder.url                    "Insert URL of JSON file here">
+<!ENTITY placeholder.textbox                "Insert JSON data here">
+
+<!-- Options page -->
+<!ENTITY options.copyData.label             "Automatically copy response data into textarea">
+<!ENTITY options.required.label             "Required extension">
+<!ENTITY options.required.desc              "Extension that is required by JSON Inspector to run properly.">
+<!ENTITY options.required.tooltip.install   "Click to install">
+<!ENTITY options.required.tooltip.view      "Click to view">
+<!ENTITY options.or.label                   "or">
+<!ENTITY options.chose.label                "(chose one only)">
+
+<!--                         DO NOT TRANSLATE BELOW THIS LINE!                         -->
+
+<!ENTITY amo.download.baseURL               "https://addons.mozilla.org/firefox/downloads/latest/">
+<!ENTITY amo.download.source                "/?src=external-JSON-Inspector">
+<!ENTITY link.onmouseenter                  "
+AddonManager.getAddonByID(event.target.statusText, function(addon) {
+  if (addon)
+    event.target.tooltipText = '&options.required.tooltip.view;';
+})">
+<!ENTITY link.onclick                       "
+event.preventDefault();
+if (event.button != 0) return;
+AddonManager.getAddonByID(event.target.statusText, function(addon) {
+  if (addon)
+    loadView('addons://detail/' + encodeURIComponent(event.target.statusText));
+  else
+    location.assign(event.target.href);
+})">
+
+<!-- DOM Inspector -->
+<!ENTITY dom-inspector.name                 "DOM Inspector">
+<!ENTITY dom-inspector.id                   "inspector@mozilla.org">
+<!ENTITY dom-inspector.amoId                "6622">
+<!-- DOM Inspector Plus! [dm] -->
+<!ENTITY dom-inspector-dp.name              "DOM Inspector Plus! [dm]">
+<!ENTITY dom-inspector-dp.id                "inspector-dp@mozilla.org">
+<!ENTITY dom-inspector-dp.amoId             "254571">
