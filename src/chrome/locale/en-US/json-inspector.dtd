@@ -11,8 +11,11 @@
 
 <!-- Options page -->
 <!ENTITY options.copyData.label             "Automatically copy response data into textarea">
+<!ENTITY options.copyData.all.label         "All data types">
+<!ENTITY options.copyData.json.label        "JSON data only">
+<!ENTITY options.copyData.dont.label        "No">
 <!ENTITY options.required.label             "Required extension">
-<!ENTITY options.required.desc              "Extension that is required by JSON Inspector to run properly.">
+<!ENTITY options.required.desc              "Extension that is required by JSON Inspector to work properly.">
 <!ENTITY options.required.tooltip.install   "Click to install">
 <!ENTITY options.required.tooltip.view      "Click to view">
 <!ENTITY options.or.label                   "or">
@@ -23,16 +26,17 @@
 <!ENTITY amo.download.baseURL               "https://addons.mozilla.org/firefox/downloads/latest/">
 <!ENTITY amo.download.source                "/?src=external-JSON-Inspector">
 <!ENTITY link.onmouseenter                  "
-AddonManager.getAddonByID(event.target.statusText, function(addon) {
+AddonManager.getAddonByID(event.target.getAttribute('guid'), function(addon) {
   if (addon)
     event.target.tooltipText = '&options.required.tooltip.view;';
 })">
 <!ENTITY link.onclick                       "
-event.preventDefault();
+event.stopPropagation();
 if (event.button != 0) return;
-AddonManager.getAddonByID(event.target.statusText, function(addon) {
+event.preventDefault();
+AddonManager.getAddonByID(event.target.getAttribute('guid'), function(addon) {
   if (addon)
-    loadView('addons://detail/' + encodeURIComponent(event.target.statusText));
+    loadView('addons://detail/' + encodeURIComponent(event.target.getAttribute('guid')));
   else
     location.assign(event.target.href);
 })">

@@ -11,8 +11,11 @@
 
 <!-- Options page -->
 <!ENTITY options.copyData.label             "Salin data respon ke dalam textarea secara otomatis">
+<!ENTITY options.copyData.all.label         "Semua tipe data">
+<!ENTITY options.copyData.json.label        "Hanya data JSON">
+<!ENTITY options.copyData.dont.label        "Tidak">
 <!ENTITY options.required.label             "Pengaya yang diperlukan">
-<!ENTITY options.required.desc              "Pengaya yang diperlukan oleh JSON Inspector agar bisa berjalan dengan semestinya.">
+<!ENTITY options.required.desc              "Pengaya yang diperlukan oleh JSON Inspector agar bisa bekerja dengan semestinya.">
 <!ENTITY options.required.tooltip.install   "Klik untuk memasang">
 <!ENTITY options.required.tooltip.view      "Klik untuk melihat">
 <!ENTITY options.or.label                   "atau">
@@ -23,16 +26,17 @@
 <!ENTITY amo.download.baseURL               "https://addons.mozilla.org/firefox/downloads/latest/">
 <!ENTITY amo.download.source                "/?src=external-JSON-Inspector">
 <!ENTITY link.onmouseenter                  "
-AddonManager.getAddonByID(event.target.statusText, function(addon) {
+AddonManager.getAddonByID(event.target.getAttribute('guid'), function(addon) {
   if (addon)
     event.target.tooltipText = '&options.required.tooltip.view;';
 })">
 <!ENTITY link.onclick                       "
-event.preventDefault();
+event.stopPropagation();
 if (event.button != 0) return;
-AddonManager.getAddonByID(event.target.statusText, function(addon) {
+event.preventDefault();
+AddonManager.getAddonByID(event.target.getAttribute('guid'), function(addon) {
   if (addon)
-    loadView('addons://detail/' + encodeURIComponent(event.target.statusText));
+    loadView('addons://detail/' + encodeURIComponent(event.target.getAttribute('guid')));
   else
     location.assign(event.target.href);
 })">

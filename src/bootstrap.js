@@ -18,10 +18,20 @@ const PREF_BRANCH = "extensions.json-inspector@loucypher.";
 const PREFS = {
   description: "chrome://json-inspector/locale/json-inspector.properties",
   //firstRun: true,
-  copyResponse: false
+  copyResponse: 0
 };
 
 function setDefaultPrefs() {
+  try {
+    // Check for old pref from v1.0
+    let prefs = Services.prefs.getBranch(PREF_BRANCH);
+    if (prefs.getPrefType("copyResponse") == prefs.PREF_BOOL) {
+      prefs.clearUserPref("copyResponse");  // Clear/remove old pref
+      prefs.setIntPref("copyResponse", 2);  // Convert to new pref
+    }
+  } catch(ex) {
+  }
+
   let branch = Services.prefs.getDefaultBranch(PREF_BRANCH);
   for (let [key, val] in Iterator(PREFS)) {
     switch (typeof val) {
@@ -134,10 +144,17 @@ function init(aWindow) {
   if (menupref)
     menupref.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspectorPrefs"), menupref);
 
+  let button = document.querySelector("#navigator-toolbox toolbarbutton.json-inspector");
+  if (button && button.disabled)
+    button.removeAttribute("disabled");
+
   unload(function() {
     let items = document.querySelectorAll(".json-inspector");
     for (let i = 0; i < items.length; i++) {
-      items[i].parentNode.removeChild(items[i]);
+      if (items[i].localName != "toolbarbutton")
+        items[i].parentNode.removeChild(items[i]);
+      else
+        items[i].setAttribute("disabled", "true");
     }
   }, aWindow)
 }

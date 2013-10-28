@@ -15,7 +15,7 @@
     <label class="text-link"
            value="&dom-inspector.name;"
            tooltiptext="&options.required.tooltip.install;"
-           statustext="&dom-inspector.id;"
+           guid="&dom-inspector.id;"
            href="&amo.download.baseURL;&dom-inspector.amoId;&amo.download.source;"
            onmouseenter="&link.onmouseenter;"
            onclick="&link.onclick;"/>
@@ -25,7 +25,7 @@
     <label class="text-link"
            value="&dom-inspector-dp.name;"
            tooltiptext="&options.required.tooltip.install;"
-           statustext="&dom-inspector-dp.id;"
+           guid="&dom-inspector-dp.id;"
            href="&amo.download.baseURL;&dom-inspector-dp.amoId;&amo.download.source;"
            onmouseenter="&link.onmouseenter;"
            onclick="&link.onclick;"/>
@@ -34,6 +34,12 @@
   </setting>
 
   <setting pref="extensions.json-inspector@loucypher.copyResponse"
-           type="bool"
-           title="&options.copyData.label;"/>
+           type="radio"
+           title="&options.copyData.label;">
+    <radiogroup>
+      <radio value="0" label="&options.copyData.dont.label;"/>
+      <radio value="1" label="&options.copyData.json.label;"/>
+      <radio value="2" label="&options.copyData.all.label;"/>
+    </radiogroup>
+  </setting>
 </vbox>
