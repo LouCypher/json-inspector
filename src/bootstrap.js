@@ -21,6 +21,8 @@ const PREFS = {
   copyResponse: 0
 };
 
+let addonId;
+
 function setDefaultPrefs() {
   try {
     // Check for old pref from v1.0
@@ -52,8 +54,11 @@ function setDefaultPrefs() {
  **/
 
 function log(aString) {
-  Services.console.logStringMessage("Bootstrap:\n" + aString);
+  Services.console.logStringMessage("JSON Inspector:\n" + aString);
 }
+
+function setResourceName(aData) aData.id.toLowerCase().match(/[^\@]+/).toString()
+                                                      .replace(/[^\w]/g, "");
 
 function resProtocolHandler(aResourceName, aURI) {
   Services.io.getProtocolHandler("resource")
@@ -117,9 +122,9 @@ function init(aWindow) {
   // Insert menuitem to Web Developer menu
   let devToolsSeparators = document.querySelectorAll("menuseparator[id$='devToolsEndSeparator']");
   for (let i = 0; i < devToolsSeparators.length; i++) {
-    let separator1 = devToolsSeparators[i];
-    if (separator1)
-      separator1.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspector"), separator1);
+    let dtSep = devToolsSeparators[i];
+    if (dtSep)
+      dtSep.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspector"), dtSep);
   };
 
   // SeaMonkey
@@ -136,9 +141,10 @@ function init(aWindow) {
   }
 
   // Add options menu
-  let separator2 = document.querySelector("#appmenu_customizeMenu menuseparator:not([id])");
-  if (separator2)
-    separator2.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspectorPrefs"), separator2);
+  let appPrefSep = document.querySelector("#appmenu_customizeMenu menuseparator:not([id]):not([class])");
+  //log(appPrefSep);
+  if (appPrefSep)
+    appPrefSep.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspectorPrefs"), appPrefSep);
 
   let menupref = document.getElementById("menu_preferences");
   if (menupref)
@@ -165,10 +171,9 @@ function init(aWindow) {
 function startup(data, reason) {
   setDefaultPrefs();
 
-  resourceName = data.id.toLowerCase().match(/[^\@]+/).toString();
-  //log(resourceName);
-
   // Add resource alias
+  let resourceName = setResourceName(data);
+  //log(resourceName);
   resProtocolHandler(resourceName, data.resourceURI);
 
   // Load module
@@ -196,7 +201,7 @@ function shutdown(data, reason) {
   Cu.unload("resource://" + resourceName + "/modules/watchwindows.jsm");
   
   // Remove resource
-  resProtocolHandler(resourceName, null);
+  resProtocolHandler(setResourceName(data), null);
 }
 
 /**
