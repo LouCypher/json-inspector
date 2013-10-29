@@ -10,7 +10,7 @@
     <em:version>0.1.1a2</em:version>
     <em:description>Inspect JSON object from a URL or entered data. Requires DOM Inspector extension.</em:description>
     <em:creator>LouCypher</em:creator>
-    <em:homepageURL>http://github.com/loucypher/json-inspector</em:homepageURL>
+    <em:homepageURL>http://loucypher.github.io/json-inspector/</em:homepageURL>
     <em:iconURL>chrome://json-inspector/skin/json-48.png</em:iconURL>
     <em:icon64URL>chrome://json-inspector/skin/json-64.png</em:icon64URL>
 
@@ -20,7 +20,7 @@
         <em:name>JSON Inspector</em:name>
         <em:description>Inspect JSON object from a URL or entered data. Requires DOM Inspector extension.</em:description>
         <em:creator>LouCypher</em:creator>
-        <em:homepageURL>http://github.com/loucypher/json-inspector</em:homepageURL>
+        <em:homepageURL>http://loucypher.github.io/json-inspector/</em:homepageURL>
       </Description>
     </em:localized>
 
@@ -30,7 +30,7 @@
         <em:name>JSON Inspector</em:name>
         <em:description>Inspeksi obyek JSON dari lokasi atau data masukan. Memerlukan pengaya DOM Inspector.</em:description>
         <em:creator>LouCypher</em:creator>
-        <em:homepageURL>http://github.com/loucypher/json-inspector</em:homepageURL>
+        <em:homepageURL>http://loucypher.github.io/json-inspector/</em:homepageURL>
       </Description>
     </em:localized>
 
