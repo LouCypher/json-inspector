@@ -165,7 +165,7 @@ function inspectURL() {
   if (isEmpty(url))
     return;
 
-  if (!/^((htt|f)tps?|chrome|resource|about|data|file):/.test(url))
+  if (!/^((ht|f)tps?|chrome|resource|about|data|file):/.test(url))
     url = "http://" + url;
 
   updateAttributes();
