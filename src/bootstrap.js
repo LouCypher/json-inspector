@@ -9,6 +9,7 @@
 
 const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://gre/modules/FileUtils.jsm");
 
 /**
  * Start setting default preferences 
@@ -235,6 +236,14 @@ function install(data, reason) {
   // Close existing JSON Inspector window
   closeJSIwindow();
 
+  // Copy Windows icon
+  let iconPath = data.installPath.path + "\\chrome\\content\\json-inspector.ico";
+  let iconFile = new FileUtils.File(iconPath);
+  let targetDir = FileUtils.getFile("AChrom", ["icons", "default"], true);
+  let targetFile = FileUtils.getFile("AChrom", ["icons", "default", "json-inspector.ico"], false);
+  if (!targetFile.exists())
+    iconFile.copyTo(targetDir, "");
+
 /*// Do something on first install only
   let prefs = Services.prefs.getBranch(PREF_BRANCH);
   if (prefs.getBoolPref("firstRun")) {
@@ -250,4 +259,9 @@ function install(data, reason) {
 function uninstall(data, reason) {
   // Close existing JSON Inspector window
   closeJSIwindow();
+
+  // Remove Windows icon
+  let iconFile = FileUtils.getFile("AChrom", ["icons", "default", "json-inspector.ico"], false);
+  if (iconFile.exists())
+    iconFile.remove(false);
 }
