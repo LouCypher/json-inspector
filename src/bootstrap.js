@@ -171,9 +171,10 @@ function init(aWindow) {
 function startup(data, reason) {
   setDefaultPrefs();
 
-  // Add resource alias
   let resourceName = setResourceName(data);
   //log(resourceName);
+
+  // Add resource alias
   resProtocolHandler(resourceName, data.resourceURI);
 
   // Load module
@@ -197,11 +198,13 @@ function shutdown(data, reason) {
 
   unload();
 
+  let resourceName = setResourceName(data);
+
   // Unload module
   Cu.unload("resource://" + resourceName + "/modules/watchwindows.jsm");
   
   // Remove resource
-  resProtocolHandler(setResourceName(data), null);
+  resProtocolHandler(resourceName, null);
 }
 
 /**
