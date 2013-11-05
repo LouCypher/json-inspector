@@ -87,31 +87,33 @@ function jsonInspector(aEvent) {
   }
 }
 
-function addCommand(aDocument, aId, aLabel, aCallback) {
-  let commandset = aDocument.getElementById("mainCommandSet") || // Firefox and SeaMonkey
-                   aDocument.getElementById("mailCommands");     // Thunderbird
+function initJSONI(aWindow) {
+  const {document} = aWindow;
 
-  let command = commandset.appendChild(aDocument.createElement("command"));
-  command.id = aId;
-  command.className = "json-inspector";
-  command.setAttribute("label", aLabel);
-  command.addEventListener("command", aCallback);
-}
+  function $(aId) document.getElementById(aId);
 
-function addMenuitem(aDocument, aCommand) {
-  let menuitem = aDocument.createElement("menuitem");
-  menuitem.setAttribute("command", aCommand);
-  menuitem.setAttribute("image", "chrome://json-inspector/skin/json.png");
-  menuitem.className = "json-inspector menuitem-iconic";
-  return menuitem;
-}
+  function addCommand(aId, aLabel, aCallback) {
+    let commandset = $("mainCommandSet") || // Firefox and SeaMonkey
+                     $("mailCommands");     // Thunderbird
 
-function init(aWindow) {
-  let document = aWindow.document;
+    let command = commandset.appendChild(document.createElement("command"));
+    command.id = aId;
+    command.className = "json-inspector";
+    command.setAttribute("label", aLabel);
+    command.addEventListener("command", aCallback);
+  }
+
+  function addMenuitem(aCommand) {
+    let menuitem = document.createElement("menuitem");
+    menuitem.setAttribute("command", aCommand);
+    menuitem.setAttribute("image", "chrome://json-inspector/skin/json.png");
+    menuitem.className = "json-inspector menuitem-iconic";
+    return menuitem;
+  }
 
   // Insert commands to main commandset
-  addCommand(document, "Tools:JSONInspector", "JSON Inspector", jsonInspector);
-  addCommand(document, "Tools:JSONInspectorPrefs", "JSON Inspector Options", function() {
+  addCommand("JSONInspector:open", "JSON Inspector", jsonInspector);
+  addCommand("JSONInspector:option", "JSON Inspector Options", function() {
     let view = "addons://detail/" + encodeURIComponent(addonId) + "/preferences";
     "toEM" in aWindow ? aWindow.toEM(view)
                       : "openAddonsMgr" in aWindow ? aWindow.openAddonsMgr(view)
@@ -124,31 +126,53 @@ function init(aWindow) {
   for (let i = 0; i < devToolsSeparators.length; i++) {
     let dtSep = devToolsSeparators[i];
     if (dtSep)
-      dtSep.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspector"), dtSep);
+      dtSep.parentNode.insertBefore(addMenuitem("JSONInspector:open"), dtSep);
   };
 
   // SeaMonkey
   // Insert menuitem to Web Development menu
-  let toolsPopup = document.getElementById("toolsPopup");
+  let toolsPopup = $("toolsPopup");
   if (toolsPopup)
-    toolsPopup.appendChild(addMenuitem(document, "Tools:JSONInspector"));
+    toolsPopup.appendChild(addMenuitem("JSONInspector:open"));
 
   // Thunderbird
   // Insert menuitem to Tools menu
   let prefSep = document.querySelector("#taskPopup #prefSep");
   if (prefSep) {
-    prefSep.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspector"), prefSep);
+    prefSep.parentNode.insertBefore(addMenuitem("JSONInspector:open"), prefSep);
+  }
+
+  // Sidebar
+  // Add broadcaster
+  let broadcasterset = $("mainBroadcasterSet");
+  if (broadcasterset) {
+    let broadcaster = broadcasterset.appendChild(document.createElement("broadcaster"));
+    broadcaster.id = "json-inspector-sidebar";
+    broadcaster.className = "json-inspector";
+    broadcaster.setAttribute("label", "JSON Inspector");
+    broadcaster.setAttribute("sidebartitle", "JSON Inspector");
+    broadcaster.setAttribute("sidebarurl", "chrome://json-inspector/content/sidebar.xul");
+    broadcaster.setAttribute("oncommand", "toggleSidebar('json-inspector-sidebar');");
+    broadcaster.setAttribute("type", "checkbox");
+    broadcaster.setAttribute("group", "sidebar");
+    broadcaster.setAttribute("autoCheck", "false");
+  }
+  // Add menuitem
+  let sidebarmenu = $("viewSidebarMenu");
+  if (sidebarmenu) {
+    let menuitem = sidebarmenu.appendChild(document.createElement("menuitem"));
+    menuitem.setAttribute("observes", "json-inspector-sidebar");
   }
 
   // Add options menu
   let appPrefSep = document.querySelector("#appmenu_customizeMenu menuseparator:not([id]):not([class])");
   //log(appPrefSep);
   if (appPrefSep)
-    appPrefSep.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspectorPrefs"), appPrefSep);
+    appPrefSep.parentNode.insertBefore(addMenuitem("JSONInspector:option"), appPrefSep);
 
-  let menupref = document.getElementById("menu_preferences");
+  let menupref = $("menu_preferences");
   if (menupref)
-    menupref.parentNode.insertBefore(addMenuitem(document, "Tools:JSONInspectorPrefs"), menupref);
+    menupref.parentNode.insertBefore(addMenuitem("JSONInspector:option"), menupref);
 
   let button = document.querySelector("#navigator-toolbox toolbarbutton.json-inspector");
   if (button && button.disabled)
@@ -182,7 +206,7 @@ function startup(data, reason) {
 
   addonId = data.id;
 
-  watchWindows(init);
+  watchWindows(initJSONI);
 }
 
 /**
