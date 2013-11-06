@@ -232,6 +232,20 @@ function shutdown(data, reason) {
   resProtocolHandler(resourceName, null);
 }
 
+function getIconFileName() {
+  let {OS} = Services.appinfo;
+  if (!(OS == "WINNT" || OS == "Linux"))
+    return null;
+
+  let fileName = "json-inspector";
+  if (OS == "WINNT")
+    fileName += ".ico";
+  else
+    fileName += ".png";
+
+  return fileName;
+}
+
 /**
  * Handle the add-on being installed
  */
@@ -239,21 +253,37 @@ function install(data, reason) {
   // Close existing JSON Inspector window
   closeJSIwindow();
 
-  // Copy Windows icon
-  let iconPath = data.installPath.path + "\\chrome\\content\\json-inspector.ico";
-  let iconFile = new FileUtils.File(iconPath);
-  let targetDir = FileUtils.getFile("AChrom", ["icons", "default"], true);
-  let targetFile = FileUtils.getFile("AChrom", ["icons", "default", "json-inspector.ico"], false);
-  if (!targetFile.exists())
-    iconFile.copyTo(targetDir, "");
+  let fileName = getIconFileName();
+  if (!fileName)
+    return;
 
-/*// Do something on first install only
-  let prefs = Services.prefs.getBranch(PREF_BRANCH);
-  if (prefs.getBoolPref("firstRun")) {
-    // doSomething();
-    prefs.setBoolPref("firstRun", false);
+  let targetFile = FileUtils.getFile("AChrom", ["icons", "default", fileName], false);
+  let {installPath} = data;
+  //log(installPath.path);
+
+  if (/.xpi$/.test(installPath.path)) { // If unpack
+    // Extract icon from installPath
+    const ZipReader = Cc["@mozilla.org/libjar/zip-reader;1"].createInstance(Ci.nsIZipReader);
+    ZipReader.open(installPath);
+    let entry;
+    let entries = ZipReader.findEntries("chrome/skin/classic/" + fileName);
+    while (entries.hasMore())
+      entry = entries.getNext();
+
+    if (!targetFile.exists())
+      ZipReader.extract(entry, targetFile);
+
+    ZipReader.close();
   }
-*/
+
+  else {
+    // Copy icon from installPath
+    let iconPath = installPath.path + "\\chrome\\skin\\classic\\" + fileName;
+    let iconFile = new FileUtils.File(iconPath);
+    let targetDir = FileUtils.getFile("AChrom", ["icons", "default"], true);
+    if (!targetFile.exists())
+      iconFile.copyTo(targetDir, "");
+  }
 }
 
 /**
@@ -263,8 +293,13 @@ function uninstall(data, reason) {
   // Close existing JSON Inspector window
   closeJSIwindow();
 
-  // Remove Windows icon
-  let iconFile = FileUtils.getFile("AChrom", ["icons", "default", "json-inspector.ico"], false);
+/*  ACCESS DENIED
+  // Remove icon
+  let fileName = getIconFileName();
+  if (!fileName)
+    return;
+  let iconFile = FileUtils.getFile("AChrom", ["icons", "default", fileName], false);
   if (iconFile.exists())
     iconFile.remove(false);
+*/
 }
