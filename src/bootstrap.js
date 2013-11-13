@@ -293,13 +293,15 @@ function uninstall(data, reason) {
   // Close existing JSON Inspector window
   closeJSIwindow();
 
-/*  ACCESS DENIED
   // Remove icon
   let fileName = getIconFileName();
   if (!fileName)
     return;
+
   let iconFile = FileUtils.getFile("AChrom", ["icons", "default", fileName], false);
-  if (iconFile.exists())
+  if (iconFile.exists()) {
+    iconFile.permissions = 0777; // On Firefox 19+, the exctracted file's attribute
+                                 // is read-only so we change it before removing the file
     iconFile.remove(false);
-*/
+  }
 }
