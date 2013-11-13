@@ -58,14 +58,13 @@ function log(aString) {
   Services.console.logStringMessage("JSON Inspector:\n" + aString);
 }
 
-function setResourceName(aData) aData.id.toLowerCase().match(/[^\@]+/).toString()
-                                                      .replace(/[^\w]/g, "");
-
 function resProtocolHandler(aResourceName, aURI) {
   Services.io.getProtocolHandler("resource")
              .QueryInterface(Ci.nsIResProtocolHandler)
              .setSubstitution(aResourceName, aURI, null)
 }
+
+let RESOURCE_NAME;
 
 function getJSIwindow() Services.wm.getMostRecentWindow("devtools:jsonInspector");
 
@@ -196,14 +195,14 @@ function initJSONI(aWindow) {
 function startup(data, reason) {
   setDefaultPrefs();
 
-  let resourceName = setResourceName(data);
-  //log(resourceName);
+  RESOURCE_NAME = data.id.toLowerCase().match(/[^\@]+/).toString();
+  //log(RESOURCE_NAME);
 
   // Add resource alias
-  resProtocolHandler(resourceName, data.resourceURI);
+  resProtocolHandler(RESOURCE_NAME, data.resourceURI);
 
   // Load module
-  Cu.import("resource://" + resourceName + "/modules/watchwindows.jsm");
+  Cu.import("resource://" + RESOURCE_NAME + "/modules/watchwindows.jsm");
 
   addonId = data.id;
 
@@ -223,13 +222,11 @@ function shutdown(data, reason) {
 
   unload();
 
-  let resourceName = setResourceName(data);
-
   // Unload module
-  Cu.unload("resource://" + resourceName + "/modules/watchwindows.jsm");
+  Cu.unload("resource://" + RESOURCE_NAME + "/modules/watchwindows.jsm");
   
   // Remove resource
-  resProtocolHandler(resourceName, null);
+  resProtocolHandler(RESOURCE_NAME, null);
 }
 
 function getIconFileName() {
