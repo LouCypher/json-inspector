@@ -32,7 +32,7 @@ function setDefaultPrefs() {
       prefs.clearUserPref("copyResponse");  // Clear/remove old pref
       prefs.setIntPref("copyResponse", 2);  // Convert to new pref
     }
-  } catch(ex) {
+  } catch (ex) {
   }
 
   let branch = Services.prefs.getDefaultBranch(PREF_BRANCH);
@@ -254,32 +254,36 @@ function install(data, reason) {
   if (!fileName)
     return;
 
-  let targetFile = FileUtils.getFile("AChrom", ["icons", "default", fileName], false);
-  let {installPath} = data;
-  //log(installPath.path);
+  try {
+    let targetFile = FileUtils.getFile("AChrom", ["icons", "default", fileName], false);
+    let {installPath} = data;
+    //log(installPath.path);
 
-  if (/.xpi$/.test(installPath.path)) { // If unpack
-    // Extract icon from installPath
-    const ZipReader = Cc["@mozilla.org/libjar/zip-reader;1"].createInstance(Ci.nsIZipReader);
-    ZipReader.open(installPath);
-    let entry;
-    let entries = ZipReader.findEntries("chrome/skin/classic/" + fileName);
-    while (entries.hasMore())
-      entry = entries.getNext();
+    if (/.xpi$/.test(installPath.path)) { // If unpack
+      // Extract icon from installPath
+      const ZipReader = Cc["@mozilla.org/libjar/zip-reader;1"].createInstance(Ci.nsIZipReader);
+      ZipReader.open(installPath);
+      let entry;
+      let entries = ZipReader.findEntries("chrome/skin/classic/" + fileName);
+      while (entries.hasMore())
+        entry = entries.getNext();
 
-    if (!targetFile.exists())
-      ZipReader.extract(entry, targetFile);
+      if (!targetFile.exists())
+        ZipReader.extract(entry, targetFile);
 
-    ZipReader.close();
-  }
+      ZipReader.close();
+    }
 
-  else {
-    // Copy icon from installPath
-    let iconPath = installPath.path + "\\chrome\\skin\\classic\\" + fileName;
-    let iconFile = new FileUtils.File(iconPath);
-    let targetDir = FileUtils.getFile("AChrom", ["icons", "default"], true);
-    if (!targetFile.exists())
-      iconFile.copyTo(targetDir, "");
+    else {
+      // Copy icon from installPath
+      let iconPath = installPath.path + "\\chrome\\skin\\classic\\" + fileName;
+      let iconFile = new FileUtils.File(iconPath);
+      let targetDir = FileUtils.getFile("AChrom", ["icons", "default"], true);
+      if (!targetFile.exists())
+        iconFile.copyTo(targetDir, "");
+    }
+  } catch (ex) {
+    log(ex);
   }
 }
 
@@ -295,10 +299,14 @@ function uninstall(data, reason) {
   if (!fileName)
     return;
 
-  let iconFile = FileUtils.getFile("AChrom", ["icons", "default", fileName], false);
-  if (iconFile.exists()) {
-    iconFile.permissions = 0777; // On Firefox 19+, the exctracted file's attribute
-                                 // is read-only so we change it before removing the file
-    iconFile.remove(false);
+  try {
+    let iconFile = FileUtils.getFile("AChrom", ["icons", "default", fileName], false);
+    if (iconFile.exists()) {
+      iconFile.permissions = 0777; // On Firefox 19+, the exctracted file's attribute
+                                   // is read-only so we change it before removing the file
+      iconFile.remove(false);
+    }
+  } catch (ex) {
+    log(ex);
   }
 }
