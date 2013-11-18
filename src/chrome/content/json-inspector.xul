@@ -56,7 +56,7 @@
   <textbox id="data" accesskey="s" multiline="true" flex="1"
            placeholder="&placeholder.textbox;"/>
 
-  <script type="application/javascript" src="chrome://inspector/content/hooks.js"/>
-  <script type="application/javascript" src="json-inspector.js"/>
+  <script type="application/x-javascript" src="chrome://inspector/content/hooks.js"/>
+  <script type="application/x-javascript" src="json-inspector.js"/>
 
 </dialog>
