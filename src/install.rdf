@@ -5,9 +5,8 @@
     <em:id>json-inspector@loucypher</em:id>
     <em:type>2</em:type>
     <em:bootstrap>true</em:bootstrap>
-    <em:unpack>false</em:unpack>
     <em:name>JSON Inspector</em:name>
-    <em:version>0.2a6</em:version>
+    <em:version>0.2</em:version>
     <em:description>Inspect JSON object from a URL or entered data. Requires DOM Inspector extension.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:homepageURL>http://loucypher.github.io/json-inspector/</em:homepageURL>
