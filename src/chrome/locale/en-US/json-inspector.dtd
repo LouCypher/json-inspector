@@ -1,4 +1,3 @@
-<!-- JSON Inspector window -->
 <!ENTITY button.inspect.label               "Inspect">
 <!ENTITY button.inspect.url.key             "p">
 <!ENTITY button.inspect.data.key            "I">
@@ -8,44 +7,3 @@
 <!ENTITY button.close.key                   "C">
 <!ENTITY placeholder.url                    "Insert URL of JSON file here">
 <!ENTITY placeholder.textbox                "Insert JSON data here">
-
-<!-- Options page -->
-<!ENTITY options.copyData.label             "Automatically copy response data into textarea">
-<!ENTITY options.copyData.all.label         "All data types">
-<!ENTITY options.copyData.json.label        "JSON data only">
-<!ENTITY options.copyData.dont.label        "No">
-<!ENTITY options.required.label             "Required extension">
-<!ENTITY options.required.desc              "Extension that is required by JSON Inspector to work properly.">
-<!ENTITY options.required.tooltip.install   "Click to install">
-<!ENTITY options.required.tooltip.view      "Click to view">
-<!ENTITY options.or.label                   "or">
-<!ENTITY options.chose.label                "(choose one only)">
-
-<!--                         DO NOT TRANSLATE BELOW THIS LINE!                         -->
-
-<!ENTITY amo.download.baseURL               "https://addons.mozilla.org/firefox/downloads/latest/">
-<!ENTITY amo.download.source                "/?src=external-JSON-Inspector">
-<!ENTITY link.onmouseenter                  "
-AddonManager.getAddonByID(event.target.getAttribute('guid'), function(addon) {
-  if (addon)
-    event.target.tooltipText = '&options.required.tooltip.view;';
-})">
-<!ENTITY link.onclick                       "
-event.stopPropagation();
-if (event.button != 0) return;
-event.preventDefault();
-AddonManager.getAddonByID(event.target.getAttribute('guid'), function(addon) {
-  if (addon)
-    loadView('addons://detail/' + encodeURIComponent(event.target.getAttribute('guid')));
-  else
-    location.assign(event.target.href);
-})">
-
-<!-- DOM Inspector -->
-<!ENTITY dom-inspector.name                 "DOM Inspector">
-<!ENTITY dom-inspector.id                   "inspector@mozilla.org">
-<!ENTITY dom-inspector.amoId                "6622">
-<!-- DOM Inspector Plus! [dm] -->
-<!ENTITY dom-inspector-dp.name              "DOM Inspector Plus! [dm]">
-<!ENTITY dom-inspector-dp.id                "inspector-dp@mozilla.org">
-<!ENTITY dom-inspector-dp.amoId             "254571">

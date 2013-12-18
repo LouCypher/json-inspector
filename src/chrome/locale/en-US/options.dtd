@@ -1,0 +1,10 @@
+<!ENTITY options.copyData.label             "Automatically copy response data into textarea">
+<!ENTITY options.copyData.all.label         "All data types">
+<!ENTITY options.copyData.json.label        "JSON data only">
+<!ENTITY options.copyData.dont.label        "No">
+<!ENTITY options.required.label             "Required extension">
+<!ENTITY options.required.desc              "Extension that is required by JSON Inspector to work properly.">
+<!ENTITY options.required.tooltip.install   "Click to install">
+<!ENTITY options.required.tooltip.view      "Click to view">
+<!ENTITY options.or.label                   "or">
+<!ENTITY options.chose.label                "(choose one only)">

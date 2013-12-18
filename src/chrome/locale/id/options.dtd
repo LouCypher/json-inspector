@@ -1,0 +1,10 @@
+<!ENTITY options.copyData.label             "Salin data respon ke dalam textarea secara otomatis">
+<!ENTITY options.copyData.all.label         "Semua tipe data">
+<!ENTITY options.copyData.json.label        "Hanya data JSON">
+<!ENTITY options.copyData.dont.label        "Tidak">
+<!ENTITY options.required.label             "Pengaya yang diperlukan">
+<!ENTITY options.required.desc              "Pengaya yang diperlukan oleh JSON Inspector agar bisa bekerja dengan semestinya.">
+<!ENTITY options.required.tooltip.install   "Klik untuk memasang">
+<!ENTITY options.required.tooltip.view      "Klik untuk melihat">
+<!ENTITY options.or.label                   "atau">
+<!ENTITY options.chose.label                "(pilih salah satu saja)">

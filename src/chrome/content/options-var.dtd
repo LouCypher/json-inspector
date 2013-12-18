@@ -1,0 +1,2 @@
+<!ENTITY amo.download.baseURL   "https://addons.mozilla.org/firefox/downloads/latest/">
+<!ENTITY amo.download.source    "/?src=external-JSON-Inspector">

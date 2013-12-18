@@ -8,27 +8,54 @@
     - LouCypher (original code)
 -->
 
-<!DOCTYPE vbox SYSTEM "chrome://json-inspector/locale/">
+<!DOCTYPE vbox [
+  <!ENTITY % optionsDTD SYSTEM "chrome://json-inspector/locale/options.dtd">
+  %optionsDTD;
+  <!ENTITY % optionsVarDTD SYSTEM "chrome://json-inspector/content/options-var.dtd">
+  %optionsVarDTD;
+]>
 
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <setting type="control" title="&options.required.label;" desc="&options.required.desc;">
     <label class="text-link"
-           value="&dom-inspector.name;"
+           value="DOM Inspector"
            tooltiptext="&options.required.tooltip.install;"
-           guid="&dom-inspector.id;"
-           href="&amo.download.baseURL;&dom-inspector.amoId;&amo.download.source;"
-           onmouseenter="&link.onmouseenter;"
-           onclick="&link.onclick;"/>
+           addon-id="inspector@mozilla.org"
+           href="&amo.download.baseURL;6622&amo.download.source;"
+           onmouseenter="AddonManager.getAddonByID(event.target.getAttribute('addon-id'),
+ function(addon) {
+   if (addon)
+     event.target.tooltipText = '&options.required.tooltip.view;';
+ })"
+           onclick="event.stopPropagation(); if (event.button != 0) return;
+ event.preventDefault();
+ AddonManager.getAddonByID(event.target.getAttribute('addon-id'), function(addon) {
+   if (addon)
+     loadView('addons://detail/' + encodeURIComponent(event.target.getAttribute('addon-id')));
+   else
+     location.assign(event.target.href);
+ })"/>
 
     <label value="&options.or.label;"/>
 
     <label class="text-link"
-           value="&dom-inspector-dp.name;"
+           value="DOM Inspector Plus! [dm]"
            tooltiptext="&options.required.tooltip.install;"
-           guid="&dom-inspector-dp.id;"
-           href="&amo.download.baseURL;&dom-inspector-dp.amoId;&amo.download.source;"
-           onmouseenter="&link.onmouseenter;"
-           onclick="&link.onclick;"/>
+           addon-id="inspector-dp@mozilla.org"
+           href="&amo.download.baseURL;254571&amo.download.source;"
+           onmouseenter="AddonManager.getAddonByID(event.target.getAttribute('addon-id'),
+ function(addon) {
+   if (addon)
+     event.target.tooltipText = '&options.required.tooltip.view;';
+ })"
+           onclick="event.stopPropagation(); if (event.button != 0) return;
+ event.preventDefault();
+ AddonManager.getAddonByID(event.target.getAttribute('addon-id'), function(addon) {
+   if (addon)
+     loadView('addons://detail/' + encodeURIComponent(event.target.getAttribute('addon-id')));
+   else
+     location.assign(event.target.href);
+ })"/>
 
     <label value="&options.chose.label;"/>
   </setting>
