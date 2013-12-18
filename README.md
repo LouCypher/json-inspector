@@ -5,14 +5,14 @@ Requires either [DOM Inspector](https://addons.mozilla.org/addon/dom-inspector-6
 
 ## Compatibility
 
-* [Firefox](http://www.mozilla.org/firefox/fx/#desktop) 17.0 - 26.*
-* [SeaMonkey](http://www.seamonkey-project.org/releases/) 2.14 - 2.23.*
-* [Thunderbird](https://www.mozilla.org/thunderbird/) 17.0 - 26.*
+* [Firefox](http://www.mozilla.org/firefox/fx/#desktop) 17.0 - 29.*
+* [SeaMonkey](http://www.seamonkey-project.org/releases/) 2.14 - 2.26.*
+* [Thunderbird](https://www.mozilla.org/thunderbird/) 17.0 - 29.*
 
 ## Installations
 
-* [Latest release](https://addons.mozilla.org/firefox/downloads/latest/469332/?src=external-home)
-at [Mozilla Add-ons](https://addons.mozilla.org/addon/json-inspector/?src=external-home)
+* [Latest stable release](https://addons.mozilla.org/addon/json-inspector/?src=external-home)
+* [Latest dev build](http://loucypher.github.io/json-inspector/xpi/json-inspector.xpi)
 
 ## Screenshots
 
