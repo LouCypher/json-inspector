@@ -12,7 +12,7 @@ Cu.import("resource://gre/modules/Services.jsm");
 Cu.import("resource://gre/modules/FileUtils.jsm");
 
 /**
- * Start setting default preferences 
+ * Start setting default preferences
  * http://starkravingfinkle.org/blog/2011/01/restartless-add-ons-%e2%80%93-default-preferences/
  */
 const PREF_BRANCH = "extensions.json-inspector@loucypher.";
@@ -51,7 +51,7 @@ function setDefaultPrefs() {
   }
 }
 /*
- * End setting default preferences 
+ * End setting default preferences
  **/
 
 function log(aString) {
@@ -78,7 +78,7 @@ function jsonInspector(aEvent) {
   let win = getJSIwindow();
   if (win)
     win.focus();
-  
+
   else {
     let node = aEvent.target;
     let globalWin = node.ownerGlobal ? node.ownerGlobal : node.ownerDocument.defaultView;
@@ -87,7 +87,13 @@ function jsonInspector(aEvent) {
   }
 }
 
-function initJSONI(aWindow) {
+function toggleSidebar(aEvent) {
+  let node = aEvent.target;
+  let globalWin = node.ownerGlobal ? node.ownerGlobal : node.ownerDocument.defaultView;
+  globalWin.toggleSidebar("json-inspector-sidebar");
+}
+
+function main(aWindow) {
   const {document} = aWindow;
 
   function $(aId) document.getElementById(aId);
@@ -120,7 +126,7 @@ function initJSONI(aWindow) {
                                                    : aWindow.BrowserOpenAddonsMgr(view);
   });
 
-  // Firefox
+  /** Firefox **/
   // Insert menuitem to Web Developer menu
   let devToolsSeparators = document.querySelectorAll("menuseparator[id$='devToolsEndSeparator']");
   for (let i = 0; i < devToolsSeparators.length; i++) {
@@ -129,40 +135,44 @@ function initJSONI(aWindow) {
       dtSep.parentNode.insertBefore(addMenuitem("JSONInspector:open"), dtSep);
   };
 
-  // SeaMonkey
+  /** SeaMonkey **/
   // Insert menuitem to Web Development menu
   let toolsPopup = $("toolsPopup");
   if (toolsPopup)
     toolsPopup.appendChild(addMenuitem("JSONInspector:open"));
 
-  // Thunderbird
+  /** Thunderbird **/
   // Insert menuitem to Tools menu
   let prefSep = document.querySelector("#taskPopup #prefSep");
   if (prefSep) {
     prefSep.parentNode.insertBefore(addMenuitem("JSONInspector:open"), prefSep);
   }
 
-  // Sidebar
-  // Add broadcaster
+  /** Start Sidebar commands for Firefox and SeaMonkey **/
   let broadcasterset = $("mainBroadcasterSet");
   if (broadcasterset) {
+    // Insert command to main commandset
+    addCommand("JSONInspector:sidebar", "JSON Inspector", toggleSidebar);
+
+    // Insert broadcaster to main broadcasterset
     let broadcaster = broadcasterset.appendChild(document.createElement("broadcaster"));
     broadcaster.id = "json-inspector-sidebar";
     broadcaster.className = "json-inspector";
-    broadcaster.setAttribute("label", "JSON Inspector");
     broadcaster.setAttribute("sidebartitle", "JSON Inspector");
     broadcaster.setAttribute("sidebarurl", "chrome://json-inspector/content/sidebar.xul");
-    broadcaster.setAttribute("oncommand", "toggleSidebar('json-inspector-sidebar');");
     broadcaster.setAttribute("type", "checkbox");
     broadcaster.setAttribute("group", "sidebar");
     broadcaster.setAttribute("autoCheck", "false");
   }
-  // Add menuitem
+
+  // Insert menuitem to Sidebar menu
   let sidebarmenu = $("viewSidebarMenu");
   if (sidebarmenu) {
     let menuitem = sidebarmenu.appendChild(document.createElement("menuitem"));
+    menuitem.setAttribute("command", "JSONInspector:sidebar");
     menuitem.setAttribute("observes", "json-inspector-sidebar");
   }
+  /** End Sidebar commands **/
 
   // Add options menu
   let appPrefSep = document.querySelector("#appmenu_customizeMenu menuseparator:not([id]):not([class])");
@@ -179,6 +189,16 @@ function initJSONI(aWindow) {
     button.removeAttribute("disabled");
 
   unload(function() {
+    // Close sidebar if JSON Inspector sidebar is opened
+    let sidebar = $("urn:sidebar:panel:json-inspector-sidebar") ||  // SeaMonkey
+                  $("json-inspector-sidebar");                      // Firefox
+    if (sidebar) {
+      if (sidebar.hasAttribute("checked"))
+        aWindow.toggleSidebar("json-inspector-sidebar");  // Firefox
+      if (sidebar.hasAttribute("selected") && !$("sidebar-box").hasAttribute("collapsed"))
+        aWindow.SidebarShowHide();  // SeaMonkey
+    }
+
     let items = document.querySelectorAll(".json-inspector");
     for (let i = 0; i < items.length; i++) {
       if (items[i].localName != "toolbarbutton")
@@ -206,7 +226,7 @@ function startup(data, reason) {
 
   addonId = data.id;
 
-  watchWindows(initJSONI);
+  watchWindows(main);
 }
 
 /**
@@ -224,7 +244,7 @@ function shutdown(data, reason) {
 
   // Unload module
   Cu.unload("resource://" + RESOURCE_NAME + "/modules/watchwindows.jsm");
-  
+
   // Remove resource
   resProtocolHandler(RESOURCE_NAME, null);
 }
