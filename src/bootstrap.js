@@ -157,7 +157,8 @@ function main(aWindow) {
     // Insert broadcaster to main broadcasterset
     let broadcaster = broadcasterset.appendChild(document.createElement("broadcaster"));
     broadcaster.id = "json-inspector-sidebar";
-    broadcaster.className = "json-inspector";
+    //broadcaster.className = "json-inspector";
+    broadcaster.setAttribute("label", "JSON Inspector");
     broadcaster.setAttribute("sidebartitle", "JSON Inspector");
     broadcaster.setAttribute("sidebarurl", "chrome://json-inspector/content/sidebar.xul");
     broadcaster.setAttribute("type", "checkbox");
@@ -169,6 +170,7 @@ function main(aWindow) {
   let sidebarmenu = $("viewSidebarMenu");
   if (sidebarmenu) {
     let menuitem = sidebarmenu.appendChild(document.createElement("menuitem"));
+    menuitem.className = "json-inspector";
     menuitem.setAttribute("command", "JSONInspector:sidebar");
     menuitem.setAttribute("observes", "json-inspector-sidebar");
   }
@@ -199,13 +201,13 @@ function main(aWindow) {
         aWindow.SidebarShowHide();  // SeaMonkey
     }
 
+    // Remove sidebar broadcaster
+    $("json-inspector-sidebar").parentNode.removeChild($("json-inspector-sidebar"));
+    
+    // Remove all JSI elements
     let items = document.querySelectorAll(".json-inspector");
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].localName != "toolbarbutton")
-        items[i].parentNode.removeChild(items[i]);
-      else
-        items[i].setAttribute("disabled", "true");
-    }
+    for (let i = 0; i < items.length; i++)
+      items[i].parentNode.removeChild(items[i]);
   }, aWindow)
 }
 
