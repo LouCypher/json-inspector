@@ -5,9 +5,9 @@ Requires either [DOM Inspector](https://addons.mozilla.org/addon/dom-inspector-6
 
 ## Compatibility
 
-* [Firefox](http://www.mozilla.org/firefox/fx/#desktop) 17.0 - 29.*
-* [SeaMonkey](http://www.seamonkey-project.org/releases/) 2.14 - 2.26.*
-* [Thunderbird](https://www.mozilla.org/thunderbird/) 17.0 - 29.*
+* [Firefox](http://www.mozilla.org/firefox/fx/#desktop) 17.0 - 30.*
+* [SeaMonkey](http://www.seamonkey-project.org/releases/) 2.14 - 2.27.*
+* [Thunderbird](https://www.mozilla.org/thunderbird/) 17.0 - 30.*
 
 ## Installations
 
